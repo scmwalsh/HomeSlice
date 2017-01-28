@@ -59,7 +59,7 @@ io.sockets.on('connection', function(socket){
 
 server.get('/', function(req,response){
       response.writeHead(200, {"Content-Type": "application/json"});
-      var otherObject = { item1: "item1val", item2: "item2val" };
+      var otherObject = { item1: "item1val", item2: "item2val", price: "$599,000", bedrooms: "4", bath: "3",  };
       var json = JSON.stringify({
       anObject: otherObject
   });
