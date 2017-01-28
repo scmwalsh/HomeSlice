@@ -19,19 +19,19 @@ server.configure(function(){
 //setup the errors
 server.error(function(err, req, res, next){
     if (err instanceof NotFound) {
-        res.render('404.jade', { locals: { 
+        res.render('404.jade', { locals: {
                   title : '404 - Not Found'
                  ,description: ''
                  ,author: ''
-                 ,analyticssiteid: 'XXXXXXX' 
+                 ,analyticssiteid: 'XXXXXXX'
                 },status: 404 });
     } else {
-        res.render('500.jade', { locals: { 
+        res.render('500.jade', { locals: {
                   title : 'The Server Encountered an Error'
                  ,description: ''
                  ,author: ''
                  ,analyticssiteid: 'XXXXXXX'
-                 ,error: err 
+                 ,error: err
                 },status: 500 });
     }
 });
@@ -57,15 +57,13 @@ io.sockets.on('connection', function(socket){
 
 /////// ADD ALL YOUR ROUTES HERE  /////////
 
-server.get('/', function(req,res){
-  res.render('index.jade', {
-    locals : { 
-              title : 'Your Page Title'
-             ,description: 'Your Page Description'
-             ,author: 'Your Name'
-             ,analyticssiteid: 'XXXXXXX' 
-            }
+server.get('/', function(req,response){
+      response.writeHead(200, {"Content-Type": "application/json"});
+      var otherObject = { item1: "item1val", item2: "item2val" };
+      var json = JSON.stringify({
+      anObject: otherObject
   });
+  response.end(json);
 });
 
 
