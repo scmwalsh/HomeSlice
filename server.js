@@ -1,8 +1,8 @@
 //setup Dependencies
 var connect = require('connect')
     , express = require('express')
-    , io = require('socket.io')
     , port = (process.env.PORT || 8081);
+    var cors = require('cors')
 
 //Setup Express
 var server = express.createServer();
@@ -14,6 +14,12 @@ server.configure(function(){
     server.use(express.session({ secret: "shhhhhhhhh!"}));
     server.use(connect.static(__dirname + '/static'));
     server.use(server.router);
+    server.use(cors());
+});
+server.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
 });
 
 //setup the errors
@@ -37,18 +43,6 @@ server.error(function(err, req, res, next){
 });
 server.listen( port);
 
-//Setup Socket.IO
-var io = io.listen(server);
-io.sockets.on('connection', function(socket){
-  console.log('Client Connected');
-  socket.on('message', function(data){
-    socket.broadcast.emit('server_message',data);
-    socket.emit('server_message',data);
-  });
-  socket.on('disconnect', function(){
-    console.log('Client Disconnected.');
-  });
-});
 
 
 ///////////////////////////////////////////
@@ -59,7 +53,7 @@ io.sockets.on('connection', function(socket){
 
 server.get('/', function(req,response){
       response.writeHead(200, {"Content-Type": "application/json"});
-      var otherObject = { item1: "item1val", item2: "item2val", model: "43' Redwood", price: "$599,000", bedrooms: "4", bath: "3",  };
+      var otherObject = { obj: "untitled.obj", mtl: "untitled.mtl", model: "43' Redwood", price: "$599,000", bedrooms: "4", bath: "3",  };
       var json = JSON.stringify({
       anObject: otherObject
   });
